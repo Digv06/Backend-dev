@@ -28,3 +28,15 @@
 - We use async bcoz the encryption method takes time.
 - JWT is a bearer token, it means that it baer the data which is if somebody has the key then he will be able to access the data.
 - We have used multer(is a node.js middleware for handling multipart/form-data, which is primarily used for uploading files.) and cloudinary(is an end-to-end image- and video-management solution for websites and mobile apps, covering everything from image and video uploads, storage, manipulations, optimizations to delivery.)
+
+- Creating a user registration for that the logic will be as follows:
+
+1. Get user details from frontend
+2. Validate the details - it should be not empty
+3. Check if user already exists through username and email
+4. Check for images and avatar
+5. Upload them to the cloudinary
+6. Create user object and object entry in db
+7. Remove the password and refresh token field from response
+8. Check for user creation
+9. Return response
