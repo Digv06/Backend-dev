@@ -7,7 +7,7 @@ import { apiResponse } from "../utils/apiResponse.js";
 const registerUser = asyncHandler(async (req, res) => {
   // 1. Get the user data
   const { username, email, password, fullname } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
 
   // Check all fields are filled
   if (
@@ -17,7 +17,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // 3. Check user already exists
-  const existedUser = User.findOne({
+  const existedUser = await User.findOne({
     $or: [{ username }, { email }],
   });
   if (existedUser) {
@@ -29,11 +29,21 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // multer gives the method files
   const avatarLocalPath = req.files?.avatar[0]?.path;
-  console.log(req.files);
-  const coverImageLocalPath = req.files?.coverImage[0].path;
+  // console.log(avatarLocalPath);
+  // const coverImageLocalPath = req.files?.coverImage[0]?.path; //Here we aren't checking that path is actually there as we are using optinal chain
+
+  let coverImageLocalPath;
+
+  if (
+    req.files &&
+    Array.isArray(req.files.coverImage) &&
+    req.files.coverImage.length > 0
+  ) {
+    coverImageLocalPath = req.files.coverImage[0].path;
+  }
 
   if (!avatarLocalPath) {
-    throw new apiError(400, "Avatar is required");
+    throw new apiError(400, "Avatar LocalPath is required");
   }
 
   // Upload them to cloudinary
@@ -46,7 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // create an user object and entry the db
   const user = await User.create({
-    username: username.toLowercase(),
+    username: username.toLowerCase(),
     email,
     password,
     avatar: avatar.url,
@@ -54,7 +64,9 @@ const registerUser = asyncHandler(async (req, res) => {
     fullname,
   });
 
-  const createdUser = User.findById(user._id).select("-password -refreshToken");
+  const createdUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
 
   if (!createdUser) {
     throw new apiError(500, "Something went wrong while registring the user");
