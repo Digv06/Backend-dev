@@ -5,7 +5,7 @@
 - Install nodemon and prettier with the dev dependencies like "npm i -D packagename"
 - Initialize git repo to update regularly.
 - Change "type": "module" to import the modules, otherwise to get require("packagename") use "type": "commonjs".
-- Change the script accordisng to the setting. "dev": "nodemon src/index.js".
+- Change the script according to the setting. "dev": "nodemon src/index.js".
 - Always use git bash or linux machine to easily create folders using touch, mkdir commands.
 - Use mongodb atlas for db and login into it. Create a cluster with the db and network access.
 - Install express, mongoose and dotenv packages
@@ -22,7 +22,7 @@
 - To standardize the error message we use nodejs error class. We created functions like asyncHandler, apiError and apiResponse. To handle the errors and responses. asyncHandler is a helper file.
 
 - Create User and Video model in the models folder.
-- In the production grade app, mongodb uses mongodb aggregation pipeline. Therefore install package mongoose-aggregate-paginate-v2. This package is used to write the middleware, we are using plugin hook to aggregate the pipeline. Because of this packahge the project will become advance level.
+- In the production grade app, mongodb uses mongodb aggregation pipeline. Therefore install package mongoose-aggregate-paginate-v2. This package is used to write the middleware, we are using plugin hook to aggregate the pipeline. Because of this package the project will become advance level.
 - Install bcrypt (not bcryptjs) to hash the password and also JWT(JsonWebToken) both the packages are based on cryptography.
 - Use "pre" hook just before saving the data to encrypt the data. "pre" uses callback fn, don't use ()=>{}. Use function(next){}, always put next to flag
 - We use async bcoz the encryption method takes time.
@@ -40,3 +40,17 @@
 7. Remove the password and refresh token field from response
 8. Check for user creation
 9. Return response
+
+- Access Tokens are long lived tokens and Refresh Tokens are short lived tokens. Refresh tokens are given to user and db also therefore if the user has hit the endpoint through refresh token then the user has been validated through the access token
+
+- Creating user login flow:
+
+  1. get data from req body
+  2. validate the user by username or email
+  3. find the user
+  4. Check password
+  5. access and refresh token
+  6. send cookies
+  7. response
+
+- Logout User: This is very easy, with removing the tokens and cookies. But you don't have any access to get the user as in login we have a form that contains the fields. Therefore the middleware concept(Jaate waqt milke jaana) comes into picture. We are making our own middleware.
