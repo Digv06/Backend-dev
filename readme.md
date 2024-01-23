@@ -41,7 +41,17 @@
 8. Check for user creation
 9. Return response
 
-- Access Tokens are long lived tokens and Refresh Tokens are short lived tokens. Refresh tokens are given to user and db also therefore if the user has hit the endpoint through refresh token then the user has been validated through the access token
+- Access Token:
+  An access token is a credential that represents the authorization granted to a client to access a specific resource on behalf of a user.
+  It is typically a string that is sent in the HTTP Authorization header when making requests to access protected resources.
+  Access tokens have a limited lifespan and are issued with an expiration time. Once expired, they are no longer valid, and the client needs to obtain a new one. Access tokens do not carry information about the user; they only provide information about the client's permission to access specific resources.
+
+- Refresh Token:
+
+  A refresh token is a credential used to obtain a new access token when the current access token expires.
+  Unlike access tokens, refresh tokens have a longer lifespan and are intended to be stored securely on the client side.
+  When an access token expires, the client can use the refresh token to request a new access token without requiring the user to re-authenticate.
+  Refresh tokens are valuable targets for attackers, and their security is critical. They should be stored securely and transmitted over secure channels.
 
 - Creating user login flow:
 
