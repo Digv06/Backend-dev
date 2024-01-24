@@ -64,3 +64,6 @@
   7. response
 
 - Logout User: This is very easy, with removing the tokens and cookies. But you don't have any access to get the user as in login we have a form that contains the fields. Therefore the middleware concept(Jaate waqt milke jaana) comes into picture. We are making our own middleware.
+
+- Created a subscription model with the fields subscriber and channel as both are the users
+- Function containing getCurrentUser, updateUser, updateAvatar, updateCoverImage has been built.
