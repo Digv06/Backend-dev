@@ -31,15 +31,15 @@
 
 - Creating a user registration for that the logic will be as follows:
 
-1. Get user details from frontend
-2. Validate the details - it should be not empty
-3. Check if user already exists through username and email
-4. Check for images and avatar
-5. Upload them to the cloudinary
-6. Create user object and object entry in db
-7. Remove the password and refresh token field from response
-8. Check for user creation
-9. Return response
+  1. Get user details from frontend
+  2. Validate the details - it should be not empty
+  3. Check if user already exists through username and email
+  4. Check for images and avatar
+  5. Upload them to the cloudinary
+  6. Create user object and object entry in db
+  7. Remove the password and refresh token field from response
+  8. Check for user creation
+  9. Return response
 
 - Access Token:
   An access token is a credential that represents the authorization granted to a client to access a specific resource on behalf of a user.
