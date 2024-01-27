@@ -67,3 +67,5 @@
 
 - Created a subscription model with the fields subscriber and channel as both are the users
 - Function containing getCurrentUser, updateUser, updateAvatar, updateCoverImage has been built.
+- Used Mongodb aggregation pipeline to get the subscriber and subscribed count of the user and channel.
+- We have used $match, $lookup, $addfields, $size, $cond, $in
