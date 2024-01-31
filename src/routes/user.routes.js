@@ -21,11 +21,11 @@ router.route("/register").post(
   upload.fields([
     {
       name: "avatar",
-      maxCount: 1,
+      maxCount: 3,
     },
     {
       name: "coverImage",
-      maxCount: 1,
+      maxCount: 3,
     },
   ]),
 
@@ -44,7 +44,7 @@ router.route("/update-user").patch(verifyJWT, updateUser);
 router.route("/avatar").patch(verifyJWT, upload.single("avatar"), updateAvatar);
 router
   .route("/coverImage")
-  .patch(verifyJWT, upload("coverImage"), updateCoverImage);
+  .patch(verifyJWT, upload.single("coverImage"), updateCoverImage);
 router.route("/c/:username").get(verifyJWT, getUserProfile);
 router.route("/watch-History").get(verifyJWT, getUserWatchistory);
 

@@ -65,6 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // Upload them to cloudinary
   const avatar = await uploadOnCloudinary(avatarLocalPath);
+  console.log(avatar);
   const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
   if (!avatar) {
@@ -88,7 +89,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!createdUser) {
     throw new apiError(500, "Something went wrong while registring the user");
   }
-
+  console.log(createdUser);
   return res
     .status(201)
     .json(new apiResponse(200, createdUser, "User registered successfully"));
@@ -150,8 +151,8 @@ const userLogout = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: {
-        refreshToken: undefined,
+      $unset: {
+        refreshToken: 1,
       },
     },
     {
@@ -168,7 +169,7 @@ const userLogout = asyncHandler(async (req, res) => {
     .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
-    .json(200, {}, "User Logged Out");
+    .json(new apiResponse(200, {}, "User Logged Out"));
 });
 
 // refreshing the refersh token through requesting
@@ -318,7 +319,7 @@ const updateCoverImage = asyncHandler(async (req, res) => {
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
-  const username = req.params;
+  const { username } = req.params;
 
   if (!username?.trim()) {
     throw new apiError(400, "User is missing");
@@ -330,6 +331,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
         username: username?.toLowerCase(),
       },
     },
+
     {
       $lookup: {
         from: "subscriptions",
@@ -338,6 +340,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
         as: "subscribers",
       },
     },
+
     {
       $lookup: {
         from: "subscriptions",
@@ -346,6 +349,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
         as: "subscribedTo",
       },
     },
+
     {
       $addFields: {
         subscriberCount: {
@@ -356,7 +360,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
         },
         isSubscribed: {
           $cond: {
-            if: { $in: [req.user?._id, "$subscribers"] },
+            if: { $in: [req.user?._id, "$subscribers.subscriber"] },
             then: true,
             else: false,
           },
@@ -376,7 +380,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     },
   ]);
 
-  if (!channel.length) {
+  if (!channel?.length) {
     throw new apiError(404, "Channel does not exists");
   }
   console.log(channel);
@@ -434,7 +438,7 @@ const getUserWatchistory = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new apiResponse(200, user.watchHistory[0], "Watch history fetched"));
+    .json(new apiResponse(200, user[0].watchHistory, "Watch history fetched"));
 });
 
 export {
